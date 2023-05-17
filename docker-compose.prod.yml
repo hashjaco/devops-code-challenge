@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  backend:
+    container_name: backend-prod
+    image: backend-prod
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "8080:8080"
+
+  frontend:
+    container_name: frontend-prod
+    image: frontend-prod
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
