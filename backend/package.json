@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "esbuild --bundle index.js --outfile=build/app.js --minify --platform=node",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "lightfeather.io",
   "license": "ISC",
   "dependencies": {
+    "esbuild": "^0.17.19",
     "express": "^4.17.1",
     "uuid": "^8.3.2"
   }

@@ -1,22 +1,24 @@
-# Use an official Node.js runtime as the parent image
-FROM node:16
+FROM node:16-alpine3.17 AS builder
+
+ENV NODE_ENV production
 
 WORKDIR /app
 
 COPY package.json yarn.lock ./
 
-RUN yarn install
+RUN yarn install --production
 
 COPY . .
 
 RUN yarn build
 
-# Serve the build folder on port 3000
-FROM node:16-alpine
-RUN yarn global add serve
-WORKDIR /app
-COPY --from=0 /app/build .
+# Bundle static assets using nginx for better performance
+FROM nginx:1.24.0-alpine3.17 AS production
+ENV NODE_ENV production
 
-EXPOSE 3000
+COPY --from=builder /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD ["serve", "-s", ".", "-l", "3000"]
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
