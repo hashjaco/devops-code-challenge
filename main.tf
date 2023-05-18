@@ -21,5 +21,3 @@ resource "aws_instance" "app_server" {
     Name = "FirstAppServerInstance"
   }
 }
-
-# TODO: recreate IAM user in AWS
